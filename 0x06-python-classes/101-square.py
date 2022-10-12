@@ -50,12 +50,20 @@ class Square:
         print(self.__str__())
 
     def __str__(self):
-        """Print representation of squares"""
+        rtn = ""
+
         if self.size == 0:
-            return
-        else:
-            str = '\n' * self.__position[1]
-        for i in range(self.__size):
-            str += ' ' * self.position[0]
-            str += '#' * self.__size + '\n'
-        return str[:-1]
+            return rtn
+
+        for i in range(self.position[1]):
+            rtn += "\n"
+
+        for i in range(0, self.size):
+            for k in range(self.position[0]):
+                rtn += " "
+            for j in range(self.size):
+                rtn += "#"
+            if i is not (self.size - 1):
+                rtn += "\n"
+
+        return rtn
