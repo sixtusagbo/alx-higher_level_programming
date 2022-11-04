@@ -34,12 +34,20 @@ Both must be integers:
 		...
 	TypeError: a must be an integer
 
-	>>> add_integer("Hi")
+Float overflow:
+	>>> add_integer(float('inf'), float('-inf'))
 	Traceback (most recent call last):
 		...
-	TypeError: a must be an integer
+	OverflowError: cannot convert float infinity to integer
 
-	>>> add_integer("Tes", "W")
+Float overflow 2:
+	>>> add_integer(float('inf'), 0)
 	Traceback (most recent call last):
 		...
-	TypeError: a must be an integer
+	OverflowError: cannot convert float infinity to integer
+
+Cannot convert NaN to integer:
+	>>> add_integer(0, float('nan'))
+	Traceback (most recent call last):
+		...
+	ValueError: cannot convert float NaN to integer
