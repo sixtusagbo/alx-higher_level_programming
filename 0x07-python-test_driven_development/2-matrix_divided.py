@@ -22,10 +22,10 @@ def matrix_divided(matrix, div):
         ZeroDivisionError: if `div` is equal to zero
     """
 
-    matrix_type_msg = "matrix must be a matrix (list of lists) of integers/floats"
+    type_msg = "matrix must be a matrix (list of lists) of integers/floats"
 
     if not any(isinstance(el, list) for el in matrix):
-        raise TypeError(matrix_type_msg)
+        raise TypeError(type_msg)
 
     if not isinstance(div, (int, float)):
         raise TypeError("div must be a number")
@@ -39,7 +39,7 @@ def matrix_divided(matrix, div):
     for elems in matrix:
         for num in elems:
             if not isinstance(num, (int, float)):
-                raise TypeError(matrix_type_msg)
+                raise TypeError(type_msg)
 
     return list(map(lambda x: list(map(lambda y: round(y / div, 2), x)),
                     matrix))

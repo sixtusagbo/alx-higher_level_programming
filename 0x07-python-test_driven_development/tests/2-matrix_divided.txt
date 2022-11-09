@@ -77,7 +77,7 @@ Each row must have of the same size:
 Float overflow in `div`:
 
 	>>> matrix = [[2, 4], [6, 3]]
-	>>> print(matrix_divided(matrix, float("inf"))
+	>>> print(matrix_divided(matrix, float("inf")))
 	[[0.0, 0.0], [0.0, 0.0]]
 
 Float overflow in `matrix`:
@@ -95,6 +95,6 @@ Float overflow in `matrix` and `div`:
 	...		[1, 2, float("inf")],
 	...		[4, 5, 6]
 	...	]
-	>>> print(matrix_divided(matrix, float("inf')))
-	[[0.33, 0.67, nan], [1.33, 1.67, 2.0]]
+	>>> print(matrix_divided(matrix, float("inf")))
+	[[0.0, 0.0, nan], [0.0, 0.0, 0.0]]
 
