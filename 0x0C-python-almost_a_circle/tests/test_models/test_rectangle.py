@@ -5,6 +5,8 @@ Test for Rectangle class
 import unittest
 from models.base import Base
 from models.rectangle import Rectangle
+from io import StringIO
+from unittest.mock import patch
 
 
 class TestRectangle(unittest.TestCase):
@@ -83,11 +85,29 @@ class TestRectangle(unittest.TestCase):
             new = Rectangle(10, 2)
             new.y = -2
 
+    def test_rectangle_is_base_instance(self):
+        """ Rectangle is Base instance """
+        new = Rectangle(3, 4)
+        self.assertTrue(isinstance(new, Base))
+
     def test_area(self):
         """ area must be correct """
         r1 = Rectangle(3, 2)
         r2 = Rectangle(2, 10)
-        r3 = Rectangle(8, 7, 0, 0, 12)
         self.assertEqual(r1.area(), 6)
         self.assertEqual(r2.area(), 20)
+
+    def test_x_and_y_not_part_of_area(self):
+        """ x and y are not part of
+        the area computation
+        """
+        r3 = Rectangle(8, 7, 0, 0, 12)
         self.assertEqual(r3.area(), 56)
+
+    def test_display_0(self):
+        """ print in stdout with char # """
+        r1 = Rectangle(4, 5)
+        expected = "####\n####\n####\n####\n####\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            r1.display()
+            self.assertEqual(mock_stdout.getvalue(), expected)
