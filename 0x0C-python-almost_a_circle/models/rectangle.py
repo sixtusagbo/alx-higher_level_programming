@@ -103,5 +103,7 @@ class Rectangle(Base):
 
     def __str__(self):
         """ Special method for printable string representation """
-        return "[{}] ({}) {}/{} - {}/{}".format(self.__class__.__name__, self.id, self.x,
-                                               self.y, self.width, self.height)
+        return "[{}] ({}) {}/{} - {}/{}".format(
+            self.__class__.__name__, self.id, self.x, self.y, self.width,
+            self.height
+        )
