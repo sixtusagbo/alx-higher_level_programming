@@ -100,3 +100,8 @@ class Rectangle(Base):
         """ Print rectangle with char # on stdout """
         for i in range(self.height):
             print("#" * self.width)
+
+    def __str__(self):
+        """ Special method for printable string representation """
+        return "[{}] ({}) {}/{} - {}/{}".format(self.__class__.__name__, self.id, self.x,
+                                               self.y, self.width, self.height)
