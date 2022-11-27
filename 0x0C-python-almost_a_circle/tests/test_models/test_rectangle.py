@@ -179,3 +179,35 @@ class TestRectangle(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
             print(r1)
             self.assertEqual(mock_stdout.getvalue(), expected)
+
+    def test_update_with_kwargs(self):
+        """ Update with kwargs """
+        r1 = Rectangle(10, 10, 10, 10)
+        expected = "[Rectangle] (1) 10/10 - 10/10\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            print(r1)
+            self.assertEqual(mock_stdout.getvalue(), expected)
+
+        r1.update(height=1)
+        expected = "[Rectangle] (1) 10/10 - 10/1\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            print(r1)
+            self.assertEqual(mock_stdout.getvalue(), expected)
+
+        r1.update(width=1, x=2)
+        expected = "[Rectangle] (1) 2/10 - 1/1\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            print(r1)
+            self.assertEqual(mock_stdout.getvalue(), expected)
+
+        r1.update(y=1, width=2, x=3, id=89)
+        expected = "[Rectangle] (89) 3/1 - 2/1\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            print(r1)
+            self.assertEqual(mock_stdout.getvalue(), expected)
+
+        r1.update(x=1, height=2, y=3, width=4)
+        expected = "[Rectangle] (89) 1/3 - 4/2\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            print(r1)
+            self.assertEqual(mock_stdout.getvalue(), expected)
