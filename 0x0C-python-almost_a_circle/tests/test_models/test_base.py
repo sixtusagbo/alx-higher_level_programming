@@ -84,3 +84,36 @@ class TestBase(unittest.TestCase):
             print(json_dictionary)
             print(type(json_dictionary))
             self.assertEqual(mock_stdout.getvalue(), expected)
+
+    def test_to_json_string_empty(self):
+        """ convert empty list to [] """
+        json_dictionary = Base.to_json_string([])
+        expected = "[]\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            print(json_dictionary)
+            self.assertEqual(mock_stdout.getvalue(), expected)
+
+    def test_to_json_string_none(self):
+        """ convert none to [] """
+        json_dictionary = Base.to_json_string(None)
+        expected = "[]\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            print(json_dictionary)
+            self.assertEqual(mock_stdout.getvalue(), expected)
+
+    def test_save_to_file_none(self):
+        """ save json to file """
+        Rectangle.save_to_file(None)
+        expected = "[]"
+        with open("Rectangle.json", "r") as file:
+            self.assertEqual(file.read(), expected)
+
+    def test_save_to_file(self):
+        """ save json to file """
+        r1 = Rectangle(10, 7, 2, 8)
+        r2 = Rectangle(2, 4)
+        Rectangle.save_to_file([r1, r2])
+        expected = '[{"id": 1, "width": 10, "height": 7, "x": 2, "y": 8},'
+        expected += ' {"id": 2, "width": 2, "height": 4, "x": 0, "y": 0}]'
+        with open("Rectangle.json", "r") as file:
+            self.assertEqual(file.read(), expected)
