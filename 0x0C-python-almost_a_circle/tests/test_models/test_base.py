@@ -4,6 +4,9 @@ Module that contains tests for Base class
 """
 import unittest
 from models.base import Base
+from models.rectangle import Rectangle
+from io import StringIO
+from unittest.mock import patch
 
 
 class TestBase(unittest.TestCase):
@@ -65,3 +68,19 @@ class TestBase(unittest.TestCase):
         b1 = Base()
         with self.assertRaises(AttributeError):
             b1.__nb_objects
+
+    def test_to_json_string(self):
+        """ convert list of dictionaries to JSON """
+        r1 = Rectangle(10, 7, 2, 8)
+        dictionary = r1.to_dictionary()
+        json_dictionary = Base.to_json_string([dictionary])
+        expected = "{'id': 1, 'width': 10, 'height': 7, 'x': 2, 'y': 8}\n"
+        expected += "<class 'dict'>\n"
+        expected += '[{"id": 1, "width": 10, "height": 7, "x": 2, "y": 8}]\n'
+        expected += "<class 'str'>\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            print(dictionary)
+            print(type(dictionary))
+            print(json_dictionary)
+            print(type(json_dictionary))
+            self.assertEqual(mock_stdout.getvalue(), expected)

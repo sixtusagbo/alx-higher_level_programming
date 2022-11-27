@@ -222,8 +222,10 @@ class TestRectangle(unittest.TestCase):
 
         r1_dict = r1.to_dictionary()
         expected = "{'id': 1, 'width': 10, 'height': 2, 'x': 1, 'y': 9}\n"
+        expected += "<class 'dict'>\n"
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
             print(r1_dict)
+            print(type(r1_dict))
             self.assertEqual(mock_stdout.getvalue(), expected)
 
     def test_create_new_rectangle_with_dictionary(self):
