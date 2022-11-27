@@ -148,3 +148,11 @@ class TestBase(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
             print(json_dictionary)
             self.assertEqual(mock_stdout.getvalue(), expected)
+
+    def test_create(self):
+        """ dictionary to instance """
+        r1 = Rectangle(3, 5)
+        r1_dict = r1.to_dictionary()
+        r2 = Rectangle.create(**r1_dict)
+        self.assertFalse(r1 is r2)
+        self.assertFalse(r1 == r2)
