@@ -117,3 +117,34 @@ class TestBase(unittest.TestCase):
         expected += ' {"id": 2, "width": 2, "height": 4, "x": 0, "y": 0}]'
         with open("Rectangle.json", "r") as file:
             self.assertEqual(file.read(), expected)
+
+    def test_from_json_string(self):
+        """ convert JSON to list of dictionaries """
+        list_input = [
+            {'id': 89, 'width': 10, 'height': 4},
+            {'id': 7, 'width': 1, 'height': 7}
+        ]
+        json_list_input = Rectangle.to_json_string(list_input)
+        list_output = Rectangle.from_json_string(json_list_input)
+        expected = "[{'id': 89, 'width': 10, 'height': 4},"
+        expected += " {'id': 7, 'width': 1, 'height': 7}]\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            print(list_output)
+            self.assertEqual(mock_stdout.getvalue(), expected)
+        self.assertIs(type(list_output), list)
+
+    def test_from_json_string_empty(self):
+        """ convert empty json string to [] """
+        json_dictionary = Base.from_json_string("")
+        expected = "[]\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            print(json_dictionary)
+            self.assertEqual(mock_stdout.getvalue(), expected)
+
+    def test_from_json_string_none(self):
+        """ convert none to [] """
+        json_dictionary = Base.from_json_string(None)
+        expected = "[]\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            print(json_dictionary)
+            self.assertEqual(mock_stdout.getvalue(), expected)
