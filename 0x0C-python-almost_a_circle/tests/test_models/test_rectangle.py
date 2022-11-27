@@ -211,3 +211,29 @@ class TestRectangle(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
             print(r1)
             self.assertEqual(mock_stdout.getvalue(), expected)
+
+    def test_to_dictionary(self):
+        """ Test dictionary returned """
+        r1 = Rectangle(10, 2, 1, 9)
+        expected = "[Rectangle] (1) 1/9 - 10/2\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            print(r1)
+            self.assertEqual(mock_stdout.getvalue(), expected)
+
+        r1_dict = r1.to_dictionary()
+        expected = "{'id': 1, 'width': 10, 'height': 2, 'x': 1, 'y': 9}\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            print(r1_dict)
+            self.assertEqual(mock_stdout.getvalue(), expected)
+
+    def test_create_new_rectangle_with_dictionary(self):
+        """ Test create new object with dictionary """
+        r1 = Rectangle(10, 2, 1, 9)
+        r1_dictionary = r1.to_dictionary()
+        r2 = Rectangle(1, 1)
+        r2.update(**r1_dictionary)
+        expected = "[Rectangle] (1) 1/9 - 10/2\nFalse\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            print(r2)
+            print(r1 == r2)
+            self.assertEqual(mock_stdout.getvalue(), expected)
