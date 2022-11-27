@@ -182,3 +182,29 @@ class TestSquare(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
             print(r1)
             self.assertEqual(mock_stdout.getvalue(), expected)
+
+    def test_to_dictionary(self):
+        """ Test dictionary returned """
+        r1 = Square(10, 2, 1)
+        expected = "[Square] (1) 2/1 - 10\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            print(r1)
+            self.assertEqual(mock_stdout.getvalue(), expected)
+
+        r1_dict = r1.to_dictionary()
+        expected = "{'id': 1, 'size': 10, 'x': 2, 'y': 1}\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            print(r1_dict)
+            self.assertEqual(mock_stdout.getvalue(), expected)
+
+    def test_create_new_square_with_dictionary(self):
+        """ Test create new object with dictionary """
+        r1 = Square(10, 2, 1)
+        r1_dictionary = r1.to_dictionary()
+        r2 = Square(1, 1)
+        r2.update(**r1_dictionary)
+        expected = "[Square] (1) 2/1 - 10\nFalse\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            print(r2)
+            print(r1 == r2)
+            self.assertEqual(mock_stdout.getvalue(), expected)
