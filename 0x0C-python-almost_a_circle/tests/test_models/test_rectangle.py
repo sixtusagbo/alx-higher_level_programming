@@ -136,7 +136,7 @@ class TestRectangle(unittest.TestCase):
             r1.display()
             self.assertEqual(mock_stdout.getvalue(), expected)
 
-        r2 = r2 = Rectangle(3, 2, 1, 0)
+        r2 = Rectangle(3, 2, 1, 0)
         expected = " ###\n ###\n"
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
             r2.display()
