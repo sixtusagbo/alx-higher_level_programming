@@ -50,8 +50,7 @@ class TestRectangle(unittest.TestCase):
         x must be integer
         """
         with self.assertRaises(TypeError):
-            new = Rectangle(10, 2)
-            new.x = []
+            new = Rectangle(10, 2, [])
 
     def test_y_type(self):
         """
