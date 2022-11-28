@@ -5,6 +5,7 @@ Module that contains the base class
 import json
 import os
 import csv
+import turtle
 
 
 class Base():
@@ -123,3 +124,41 @@ class Base():
             list_instances.append(cls.create(**dictionary))
 
         return list_instances
+
+    @staticmethod
+    def draw(list_rectangles, list_squares):
+        """ Let's draw it with turtle and python3-tk """
+        screen = turtle.getscreen()
+        t = turtle.Turtle()
+        turtle.bgcolor("#ccc")
+        turtle.title("sixtusagbo - ALX Almost a Circle")
+        t.pen(pencolor="blue", pensize=3, speed=1)
+
+        # Draw rectangles
+        for rectangle in list_rectangles:
+            t.penup()
+            t.goto(rectangle.x, rectangle.y)
+            t.pendown()
+            t.fillcolor("orange")
+            t.begin_fill()
+            for i in range(1, 5):
+                if i % 2 == 0:
+                    t.forward(rectangle.height)
+                else:
+                    t.forward(rectangle.width)
+                t.right(90)
+            t.end_fill()
+
+        # Draw squares
+        for square in list_squares:
+            t.penup()
+            t.goto(square.x, square.y)
+            t.pendown()
+            t.fillcolor("purple")
+            t.begin_fill()
+            for i in range(1, 5):
+                t.forward(square.size)
+                t.right(90)
+            t.end_fill()
+
+        turtle.mainloop()
