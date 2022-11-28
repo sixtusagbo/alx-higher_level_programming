@@ -57,32 +57,27 @@ class TestRectangle(unittest.TestCase):
         y must be integer
         """
         with self.assertRaises(TypeError):
-            new = Rectangle(10, 2)
-            new.y = {}
+            new = Rectangle(10, 2, 3, {})
 
     def test_width_size(self):
         """ width must be > 0 """
         with self.assertRaises(ValueError):
-            new = Rectangle(10, 2)
-            new.width = -5
+            new = Rectangle(-5, 2)
 
     def test_height_size(self):
         """ height must be > 0 """
         with self.assertRaises(ValueError):
-            new = Rectangle(10, 2)
-            new.height = -3
+            new = Rectangle(10, -3)
 
     def test_x_size(self):
         """ x cannot be negative """
         with self.assertRaises(ValueError):
-            new = Rectangle(10, 2)
-            new.x = -4
+            new = Rectangle(10, 2, -4)
 
     def test_y_size(self):
         """ y must be >= 0 """
         with self.assertRaises(ValueError):
-            new = Rectangle(10, 2)
-            new.y = -2
+            new = Rectangle(10, 2, 4, -2)
 
     def test_rectangle_is_base_instance(self):
         """ Rectangle is Base instance """
