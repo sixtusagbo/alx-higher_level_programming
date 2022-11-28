@@ -8,6 +8,7 @@ from models.rectangle import Rectangle
 from models.square import Square
 from io import StringIO
 from unittest.mock import patch
+import os
 
 
 class TestSquare(unittest.TestCase):
@@ -33,6 +34,26 @@ class TestSquare(unittest.TestCase):
         self.assertEqual(new.y, 0)
         self.assertEqual(new.id, 1)
 
+    def test_size_type(self):
+        """ size must be an integer """
+        with self.assertRaises(TypeError):
+            new = Square("4")
+
+    def test_x_type(self):
+        """ x must be an integer """
+        with self.assertRaises(TypeError):
+            new = Square(4, "2")
+
+    def test_y_type(self):
+        """ y must be an integer """
+        with self.assertRaises(TypeError):
+            new = Square(4, 2, "3")
+
+    def test_size_negative(self):
+        """ size must be > 0 """
+        with self.assertRaises(ValueError):
+            new = Square(-4)
+
     def test_validate_attrs_0(self):
         """ Trying to pass a string value """
         with self.assertRaises(TypeError):
@@ -48,7 +69,7 @@ class TestSquare(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = Square(2, 2, "2", 2)
 
-    def test_validate_attrs_0(self):
+    def test_validate_size_zero(self):
         """ Trying to pass invalid values """
         with self.assertRaises(ValueError):
             new = Square(0)
@@ -197,8 +218,8 @@ class TestSquare(unittest.TestCase):
             print(r1_dict)
             self.assertEqual(mock_stdout.getvalue(), expected)
 
-    def test_create_new_square_with_dictionary(self):
-        """ Test create new object with dictionary """
+    def test_update_square_with_dictionary(self):
+        """ Test update instance with dictionary """
         r1 = Square(10, 2, 1)
         r1_dictionary = r1.to_dictionary()
         r2 = Square(1, 1)
@@ -208,3 +229,81 @@ class TestSquare(unittest.TestCase):
             print(r2)
             print(r1 == r2)
             self.assertEqual(mock_stdout.getvalue(), expected)
+
+    def test_save_to_file_(self):
+        """ save none to file """
+        Square.save_to_file(None)
+        with open('Square.json', 'r') as file:
+            self.assertEqual(file.read(), '[]')
+
+    def test_save_em_to_file_empty_(self):
+        """ save empty to file """
+        Square.save_to_file([])
+        with open('Square.json', 'r') as file:
+            self.assertEqual(file.read(), '[]')
+
+    def test_save_to_file(self):
+        """ save json to file """
+        s1 = Square(10, 7, 2)
+        s2 = Square(2, 4)
+        Square.save_to_file([s1, s2])
+        expected = '[{"id": 1, "size": 10, "x": 7, "y": 2},'
+        expected += ' {"id": 2, "size": 2, "x": 4, "y": 0}]'
+        with open("Square.json", "r") as file:
+            self.assertEqual(file.read(), expected)
+
+    def test_from_json_string(self):
+        """ convert JSON to list of dictionaries """
+        list_input = [
+            {'id': 89, 'size': 10, 'x': 4},
+            {'id': 7, 'size': 1}
+        ]
+        json_list_input = Square.to_json_string(list_input)
+        list_output = Square.from_json_string(json_list_input)
+        expected = "[{'id': 89, 'size': 10, 'x': 4},"
+        expected += " {'id': 7, 'size': 1}]\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            print(list_output)
+            self.assertEqual(mock_stdout.getvalue(), expected)
+        self.assertIs(type(list_output), list)
+
+    def test_from_json_string_empty(self):
+        """ convert empty json string to [] """
+        json_dictionary = Square.from_json_string("")
+        expected = "[]\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            print(json_dictionary)
+            self.assertEqual(mock_stdout.getvalue(), expected)
+
+    def test_from_json_string_none(self):
+        """ convert none to [] """
+        json_dictionary = Square.from_json_string(None)
+        expected = "[]\n"
+        with patch("sys.stdout", new=StringIO()) as mock_stdout:
+            print(json_dictionary)
+            self.assertEqual(mock_stdout.getvalue(), expected)
+
+    def test_create(self):
+        """ dictionary to instance """
+        s1 = Square(3)
+        s1_dict = s1.to_dictionary()
+        s2 = Square.create(**s1_dict)
+        self.assertFalse(s1 is s2)
+        self.assertFalse(s1 == s2)
+
+    def test_load_from_file_no_file(self):
+        """ if the file does not exist """
+        try:
+            os.remove("Square.json")
+        except:
+            pass
+        list_rect = Square.load_from_file()
+        self.assertEqual(list_rect, [])
+
+    def test_load_from_file(self):
+        """ load list of instances from file """
+        r1 = Square(10, 7, 2, 8)
+        r2 = Square(2, 4)
+        Square.save_to_file([r1, r2])
+        list_rect = Square.load_from_file()
+        self.assertTrue(isinstance(list_rect[0], Square))
