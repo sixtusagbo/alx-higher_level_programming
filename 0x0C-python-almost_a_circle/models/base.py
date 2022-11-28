@@ -4,6 +4,7 @@ Module that contains the base class
 """
 import json
 import os
+import csv
 
 
 class Base():
@@ -77,5 +78,48 @@ class Base():
 
         for item in list_dict:
             list_instances.append(cls.create(**item))
+
+        return list_instances
+
+    @classmethod
+    def save_to_file_csv(cls, list_objs):
+        """ serializes list of instances to csv file """
+        filename = "{}.csv".format(cls.__name__)
+
+        if cls.__name__ == "Rectangle":
+            fields = ['id', 'width', 'height', 'x', 'y']
+        else:
+            fields = ['id', 'size', 'x', 'y']
+
+        list_dict = []
+        if not list_objs:
+            pass
+        else:
+            for obj in list_objs:
+                list_dict.append(obj.to_dictionary())
+
+        with open(filename, "w") as file:
+            writer = csv.DictWriter(file, fieldnames=fields)
+            writer.writeheader()
+            writer.writerows(list_dict)
+
+    @classmethod
+    def load_from_file_csv(cls):
+        """ deserializes csv to list of instances """
+        filename = "{}.csv".format(cls.__name__)
+
+        if os.path.exists(filename) is False:
+            return []
+
+        with open(filename, 'r') as file:
+            list_dict = list(csv.DictReader(file))
+
+        for dictionary in list_dict:
+            for key, value in dictionary.items():
+                dictionary[key] = int(value)
+
+        list_instances = []
+        for dictionary in list_dict:
+            list_instances.append(cls.create(**dictionary))
 
         return list_instances

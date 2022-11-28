@@ -100,4 +100,27 @@ class TestBase(unittest.TestCase):
         expected = "[]\n"
         with patch("sys.stdout", new=StringIO()) as mock_stdout:
             print(json_dictionary)
-            self.assertEqual(mock_stdout.getvalue(), expected) 
+            self.assertEqual(mock_stdout.getvalue(), expected)
+
+    def test_save_to_file_csv_(self):
+        """ save none to file """
+        Rectangle.save_to_file_csv(None)
+        expected = 'id,width,height,x,y\n'
+        with open('Rectangle.csv', 'r') as file:
+            self.assertEqual(file.read(), expected)
+
+    def test_save_em_to_file_csv_empty_(self):
+        """ save empty to file """
+        Rectangle.save_to_file_csv([])
+        expected = 'id,width,height,x,y\n'
+        with open('Rectangle.csv', 'r') as file:
+            self.assertEqual(file.read(), expected)
+
+    def test_save_to_file_csv(self):
+        """ save csv to file """
+        r1 = Rectangle(10, 7, 2, 8)
+        r2 = Rectangle(2, 4)
+        Rectangle.save_to_file_csv([r1, r2])
+        expected = 'id,width,height,x,y\n1,10,7,2,8\n2,2,4,0,0\n'
+        with open('Rectangle.csv', 'r') as file:
+            self.assertEqual(file.read(), expected)
