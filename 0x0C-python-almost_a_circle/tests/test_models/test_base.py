@@ -7,6 +7,7 @@ from models.base import Base
 from models.rectangle import Rectangle
 from io import StringIO
 from unittest.mock import patch
+import os
 
 
 class TestBase(unittest.TestCase):
@@ -156,3 +157,19 @@ class TestBase(unittest.TestCase):
         r2 = Rectangle.create(**r1_dict)
         self.assertFalse(r1 is r2)
         self.assertFalse(r1 == r2)
+
+    def test_load_from_file_no_file(self):
+        """ if the file does not exist """
+        try:
+            os.remove("Rectangle.json")
+        except:
+            pass
+        list_rect = Rectangle.load_from_file()
+        self.assertEqual(list_rect, [])
+
+    def test_load_from_file(self):
+        """ load list of instances from file """
+        r2 = Rectangle(2, 4)
+        Rectangle.save_to_file([r2])
+        list_rect = Rectangle.load_from_file()
+        self.assertTrue(isinstance(list_rect[0], Rectangle))
