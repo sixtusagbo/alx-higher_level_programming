@@ -19,7 +19,7 @@ if __name__ == '__main__':
                 ORDER BY c.id;", (argv[4], ))
     query_rows = cur.fetchall()
 
-    print(", ".join([row[1] for row in  query_rows]))
+    print(", ".join([row[1] for row in query_rows]))
 
     cur.close()
     conn.close()
