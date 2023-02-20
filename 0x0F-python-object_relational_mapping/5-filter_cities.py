@@ -12,11 +12,11 @@ if __name__ == '__main__':
 
     # Grab the cursor
     cur = conn.cursor()
-    cur.execute("SELECT cities.id, cities.name, states.name\
-		 FROM cities AS c\
-		 LEFT JOIN states AS s ON c.state_id s.id\
-		 WHERE s.name=%s\
-		 ORDER BY c.id;", (argv[4], ))
+    cur.execute("SELECT c.id, c.name, s.name\
+                FROM cities AS c\
+                LEFT JOIN states AS s ON c.state_id = s.id\
+                WHERE s.name=%s\
+                ORDER BY c.id;", (argv[4], ))
     query_rows = cur.fetchall()
 
     print(", ".join([row[1] for row in  query_rows]))
