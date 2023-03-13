@@ -11,9 +11,11 @@ import requests
 
 if __name__ == '__main__':
     url = 'http://0.0.0.0:5000/search_user'
-    q = ""
-    if argv[1]:
+    arg_length = len(argv)
+    if arg_length == 2:
         q = argv[1]
+    else:
+        q = ''
     response = requests.post(url, data={'q': q})
     try:
         response = response.json()
