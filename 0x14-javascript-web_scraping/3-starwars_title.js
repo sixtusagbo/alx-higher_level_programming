@@ -1,9 +1,13 @@
 #!/usr/bin/node
 const request = require('request');
+const id = process.argv[2];
 
 request
-  .get(`https://swapi-api.alx-tools.com/api/films/${process.argv[2]}`)
-  .on('data', function (data) {
-    const info = JSON.parse(data);
-    console.log(info.title);
+  .get(`https://swapi-api.alx-tools.com/api/films/${id}`, (err, res, body) => {
+    if (err) {
+      console.log(err);
+    } else {
+      const data = JSON.parse(body);
+      console.log(data.title);
+    }
   });
